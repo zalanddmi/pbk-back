@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PbkService.Data;
+using PbkService.Repositories;
+using PbkService.Services;
 
 namespace PbkService
 {
@@ -9,7 +11,7 @@ namespace PbkService
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddControllers();
+            builder.Services.AddMvc();
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -17,6 +19,8 @@ namespace PbkService
             {
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+            builder.Services.AddScoped<UserService>();
+            builder.Services.AddScoped<UserRepository>();
 
             var app = builder.Build();
             app.UseRouting();

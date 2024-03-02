@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PbkService.Models;
 
 namespace PbkService.Data
 {
@@ -8,5 +9,7 @@ namespace PbkService.Data
         {
             base.OnConfiguring(optionsBuilder);
         }
+
+        public DbSet<User> Users { get; set; }
     }
 }
