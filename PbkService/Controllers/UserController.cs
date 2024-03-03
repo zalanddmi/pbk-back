@@ -7,14 +7,9 @@ namespace PbkService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : Controller
+    public class UserController(UserService service) : Controller
     {
-        private readonly UserService _service;
-
-        public UserController(UserService service)
-        {
-            _service = service;
-        }
+        private readonly UserService _service = service;
 
         [HttpGet("register")]
         public IActionResult Register()
@@ -45,12 +40,12 @@ namespace PbkService.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            bool resultAuth = await _service.Authenticate(model);
-            if (resultAuth)
+            string result = await _service.Authenticate(model);
+            if (result == null)
             {
-                return Ok();
+                return Unauthorized("Ошибка при вводе учетных данных");
             }
-            return BadRequest();
+            return Ok(result);
         }
     }
 }

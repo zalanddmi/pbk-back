@@ -1,21 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PbkService.Data;
+﻿using PbkService.Data;
 using PbkService.Models;
 
 namespace PbkService.Repositories
 {
-    public class UserRepository
+    public class UserRepository(PbkContext context)
     {
-        private readonly PbkContext _context;
+        private readonly PbkContext _context = context;
 
-        public UserRepository(PbkContext context)
+        public User GetByUsername(string username)
         {
-            _context = context;
-        }
-
-        public async Task<User> GetByUsername(string username)
-        {
-            return await _context.Users.SingleOrDefaultAsync(x => x.Username == username);
+           return _context.Users.FirstOrDefault(x => x.Username == username);
         }
 
         public async Task Create(User user)
