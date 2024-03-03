@@ -25,8 +25,32 @@ namespace PbkService.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            await _service.Create(model);
-            return Ok(model);
+            try
+            {
+                await _service.Create(model);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("login")]
+        public IActionResult Login()
+        {
+            return Ok(new LoginViewModel());
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            bool resultAuth = await _service.Authenticate(model);
+            if (resultAuth)
+            {
+                return Ok();
+            }
+            return BadRequest();
         }
     }
 }

@@ -13,6 +13,11 @@ namespace PbkService.Repositories
             _context = context;
         }
 
+        public async Task<User> GetByUsername(string username)
+        {
+            return await _context.Users.SingleOrDefaultAsync(x => x.Username == username);
+        }
+
         public async Task Create(User user)
         {
             _context.Users.Add(user);
