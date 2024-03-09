@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PbkService.Controllers
@@ -10,9 +11,9 @@ namespace PbkService.Controllers
     {
         [HttpGet]
         [Authorize(Roles = "User")]
-        public string Get()
+        public IActionResult Get()
         {
-            return "Адекватный ответ";
+            return Ok(new { result = "Адекватный ответ" });
         }
     }
 }
