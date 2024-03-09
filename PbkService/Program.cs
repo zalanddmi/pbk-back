@@ -12,7 +12,20 @@ namespace PbkService
     {
         public static void Main(string[] args)
         {
+            string MyAllowSpecificOrigins = "MyAllowSpecificOrigins";
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder
+                                          .WithOrigins("http://localhost:4200")
+                                          .AllowAnyHeader()
+                                          .AllowAnyMethod()
+                                          ;
+                                  });
+            });
 
             builder.Services.AddMvc();
 
@@ -76,6 +89,7 @@ namespace PbkService
             builder.Services.AddScoped<UserRepository>();
 
             var app = builder.Build();
+            app.UseCors(MyAllowSpecificOrigins);
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

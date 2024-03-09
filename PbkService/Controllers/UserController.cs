@@ -45,7 +45,7 @@ namespace PbkService.Controllers
             {
                 return Unauthorized("Ошибка при вводе учетных данных");
             }
-            return Ok(result);
+            return Ok(new {token = result});
         }
     }
 }
