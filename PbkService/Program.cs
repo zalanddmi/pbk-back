@@ -81,6 +81,8 @@ namespace PbkService
             builder.Services.AddAuthorization();
             builder.Services.AddScoped<UserService>();
             builder.Services.AddScoped<UserRepository>();
+            builder.Services.AddScoped<MccService>();
+            builder.Services.AddScoped<MccRepository>();
 
             var app = builder.Build();
             app.UseCors("Development");
