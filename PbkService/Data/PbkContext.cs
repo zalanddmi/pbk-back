@@ -12,5 +12,13 @@ namespace PbkService.Data
 
         public DbSet<User> Users { get; set; }
         public DbSet<Mcc> MCCs { get; set; }
+        public DbSet<Bank> Banks { get; set; }
+        public DbSet<Card> Cards { get; set; }
+        public DbSet<Cashback> Cashbacks { get; set; }
+        public DbSet<MccPbkCategory> MccPbkCategories { get; set; }
+        public DbSet<Outlet> Outlets { get; set; }
+        public DbSet<PbkCategory> PbkCategories { get; set; }
+        public DbSet<Shop> Shops { get; set; }
+        public DbSet<TypeCard> TypeCards { get; set; }
     }
 }
