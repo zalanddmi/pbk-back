@@ -20,12 +20,19 @@ namespace PbkService.Controllers
         /// <summary>
         /// Временное решение для импорта серверного файла с MCC-кодами
         /// </summary>
-        [HttpPost("Import")]
+        [HttpPost("import")]
         [Authorize]
-        public IActionResult Import()
+        public IActionResult Import(IFormFile formFile)
         {
-            _service.LoadMccDataFromFileIfExists(@"Source\\Mcc");
-            return Ok();
+            try
+            {
+                _service.LoadMccDataFromFile(formFile);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
         }
     }
 }

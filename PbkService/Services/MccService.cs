@@ -13,23 +13,17 @@ namespace PbkService.Services
             return _repository.GetMccs();
         }
 
-        public void LoadMccDataFromFileIfExists(string directoryPath)
+        public void LoadMccDataFromFile(IFormFile formFile)
         {
-            string? filePath = Directory.GetFiles(directoryPath, "*.xlsx").FirstOrDefault();
-            if (filePath == null)
+            if (!formFile.FileName.EndsWith(".xlsx"))
             {
-                Console.WriteLine("В директории отсутствует файл с MCC");
-                return;
+                throw new InvalidDataException("Формат файла не соответствует формату Excel");
             }
-            LoadMccDataFromFile(filePath);
-        }
-
-        public void LoadMccDataFromFile(string filePath)
-        {
-            Workbook workbook = new(filePath);
+            using Stream stream = formFile.OpenReadStream();
+            Workbook workbook = new(stream);
             Worksheet worksheet = workbook.Worksheets[0];
             int rows = worksheet.Cells.MaxDataRow;
-            for (int i = 1; i < rows + 1; i++)
+            for (int i = 1; i <= rows; i++)
             {
                 string? code = worksheet.Cells[i, 0].Value?.ToString();
                 string? name = worksheet.Cells[i, 1].Value?.ToString();
@@ -37,18 +31,26 @@ namespace PbkService.Services
 
                 if (code == null || name == null)
                 {
-                    Console.WriteLine("Данные MCC некорректны при загрузке");
-                    return;
+                    throw new InvalidDataException("Данные MCC некорректны");
                 }
-                _repository.Create(new Mcc
+                Mcc? mcc = _repository.GetMccByCode(code);
+                if (mcc == null)
                 {
-                    Code = code,
-                    Name = name,
-                    Description = description
-                });
+                    _repository.Create(new Mcc
+                    {
+                        Code = code,
+                        Name = name,
+                        Description = description
+                    });
+                }
+                else
+                {
+                    mcc.Name = name;
+                    mcc.Description = description;
+                    _repository.Update(mcc);
+                }
             }
             _repository.Save();
-            File.Delete(filePath);
         }
     }
 }
