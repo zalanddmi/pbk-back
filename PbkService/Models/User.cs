@@ -3,7 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PbkService.Models
 {
-    [Index("Username", IsUnique = true)]
+    [Index(nameof(Username), IsUnique = true)]
+    [Index(nameof(PhoneNumber), IsUnique = true)]
+    [Index(nameof(Email), IsUnique = true)]
     public class User
     {
         [Key]

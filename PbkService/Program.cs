@@ -79,7 +79,7 @@ namespace PbkService
                 );
             });
             builder.Services.AddAuthorization();
-            builder.Services.AddScoped<UserService>();
+            builder.Services.AddScoped<AccountService>();
             builder.Services.AddScoped<UserRepository>();
             builder.Services.AddScoped<MccService>();
             builder.Services.AddScoped<MccRepository>();
