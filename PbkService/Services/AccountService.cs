@@ -3,18 +3,21 @@ using PbkService.Auxiliaries.Exceptions.User;
 using PbkService.Models;
 using PbkService.Repositories;
 using PbkService.Requests;
-using PbkService.Requests.Enums;
 using PbkService.Settings;
 using PbkService.ViewModels;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 
 namespace PbkService.Services
 {
     public class AccountService(UserRepository userRepository)
     {
         private readonly UserRepository _userRepository = userRepository;
+
+        private const string RegexEmail = @"^[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[A-Za-z]{2,4}$";
+        private const string RegexPhoneNumber = @"^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$";
 
         public async Task<UserDTO> Register(RegisterRequest request)
         {
@@ -25,6 +28,10 @@ namespace PbkService.Services
             }
             if (!string.IsNullOrWhiteSpace(request.Email))
             {
+                if (!Regex.IsMatch(request.Email, RegexEmail))
+                {
+                    throw new InvalidUserEmail($"Некорретное значение почты {request.Email}.");
+                }
                 User? userByEmail = await _userRepository.GetByEmail(request.Email);
                 if (userByEmail != null)
                 {
@@ -33,6 +40,10 @@ namespace PbkService.Services
             }
             if (!string.IsNullOrWhiteSpace(request.PhoneNumber))
             {
+                if (!Regex.IsMatch(request.PhoneNumber, RegexPhoneNumber))
+                {
+                    throw new InvalidUserPhonenumber($"Некорретное значение номера {request.PhoneNumber}.");
+                }
                 User? userByPhoneNumber = await _userRepository.GetByPhoneNumber(request.PhoneNumber);
                 if (userByPhoneNumber != null)
                 {
@@ -61,31 +72,32 @@ namespace PbkService.Services
 
         public async Task<UserDTO> Login(LoginRequest request)
         {
-            User? user = null;
-            switch (request.LoginType)
+            User? user;
+            if (Regex.IsMatch(request.Login, RegexEmail))
             {
-                case LoginTypes.Username:
-                    user = await _userRepository.GetByUsername(request.Value);
-                    if (user == null)
-                    {
-                        throw new UserUsernameNotExists($"Пользователя с ником {request.Value} не существует.");
-                    }
-                    break;
-                case LoginTypes.Email:
-                    user = await _userRepository.GetByEmail(request.Value);
-                    if (user == null)
-                    {
-                        throw new UserEmailNotExists($"Пользователя с почтой {request.Value} не существует.");
-                    }
-                    break;
-                case LoginTypes.PhoneNumber:
-                    user = await _userRepository.GetByPhoneNumber(request.Value);
-                    if (user == null)
-                    {
-                        throw new UserPhonenumberNotExists($"Пользователя с номером {request.Value} не существует.");
-                    }
-                    break;
+                user = await _userRepository.GetByEmail(request.Login);
+                if (user == null)
+                {
+                    throw new UserEmailNotExists($"Пользователя с почтой {request.Login} не существует.");
+                }
             }
+            else if (Regex.IsMatch(request.Login, RegexPhoneNumber))
+            {
+                user = await _userRepository.GetByPhoneNumber(request.Login);
+                if (user == null)
+                {
+                    throw new UserPhonenumberNotExists($"Пользователя с номером {request.Login} не существует.");
+                }
+            }
+            else
+            {
+                user = await _userRepository.GetByUsername(request.Login);
+                if (user == null)
+                {
+                    throw new UserUsernameNotExists($"Пользователя с ником {request.Login} не существует.");
+                }
+            }
+
             if (!VerifyHashedPassword(request.Password, user.PasswordHash, user.Salt))
             {
                 throw new InvalidUserPassword("Введенный пароль неверен.");

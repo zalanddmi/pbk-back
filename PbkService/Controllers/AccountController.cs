@@ -58,6 +58,24 @@ namespace PbkService.Controllers
                 };
                 return BadRequest(error);
             }
+            catch (InvalidUserEmail ex)
+            {
+                Error error = new()
+                {
+                    Code = nameof(InvalidUserEmail),
+                    Message = ex.Message
+                };
+                return BadRequest(error);
+            }
+            catch (InvalidUserPhonenumber ex)
+            {
+                Error error = new()
+                {
+                    Code = nameof(InvalidUserPhonenumber),
+                    Message = ex.Message
+                };
+                return BadRequest(error);
+            }
             catch (Exception ex)
             {
                 Error error = new()
