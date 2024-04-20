@@ -30,6 +30,8 @@ namespace PbkService
             services.AddScoped<UserRepository>();
             services.AddScoped<MccService>();
             services.AddScoped<MccRepository>();
+            services.AddScoped<BankRepository>();
+            services.AddScoped<BankService>();
         }
 
 
