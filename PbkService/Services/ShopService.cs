@@ -1,7 +1,9 @@
 ﻿using PbkService.Auxiliaries.Exceptions.Shop;
 using PbkService.Models;
 using PbkService.Repositories;
+using PbkService.Requests;
 using PbkService.ViewModels;
+using X.PagedList;
 
 namespace PbkService.Services
 {
@@ -26,10 +28,29 @@ namespace PbkService.Services
             List<ShopDTO> shopsDTO = [];
             foreach (Shop shop in shops)
             {
-                ShopDTO bankDTO = new(shop.Name, shop.Id);
-                shopsDTO.Add(bankDTO);
+                ShopDTO shopDTO = new(shop.Name, shop.Id);
+                shopsDTO.Add(shopDTO);
             }
             return shopsDTO;
+        }
+
+        public Auxiliaries.PagedList<ShopDTO> GetPagedList(GetPagedRequest request)
+        {
+            IPagedList<Shop> shops = _shopRepository.GetPagedShops(request.PageNumber, request.PageSize, request.SearchString);
+            List<ShopDTO> shopDTOs = [];
+            foreach (Shop shop in shops)
+            {
+                shopDTOs.Add(new ShopDTO(shop.Name, shop.Id));
+            }
+            Auxiliaries.PagedList<ShopDTO> pagedList = new()
+            {
+                PageNumber = shops.PageNumber,
+                PageSize = shops.PageSize,
+                PageCount = shops.PageCount,
+                TotalCount = shops.TotalItemCount,
+                Items = shopDTOs
+            };
+            return pagedList;
         }
 
         public int Create(ShopDTO shopDTO)

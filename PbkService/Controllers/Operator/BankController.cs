@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PbkService.Auxiliaries;
 using PbkService.Auxiliaries.Exceptions.Bank;
+using PbkService.Requests;
 using PbkService.Services;
 using PbkService.ViewModels;
 
@@ -15,11 +16,11 @@ namespace PbkService.Controllers.Operator
 
         [HttpGet]
         [Authorize]
-        public IActionResult GetBanks()
+        public IActionResult GetPagedBanks([FromQuery] GetPagedRequest request)
         {
             try
             {
-                IEnumerable<BankDTO> banks = _bankService.GetBanks();
+                PagedList<BankDTO> banks = _bankService.GetPagedList(request);
                 return Ok(banks);
             }
             catch (Exception ex)

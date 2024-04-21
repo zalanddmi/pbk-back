@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PbkService.Auxiliaries;
 using PbkService.Auxiliaries.Exceptions.Shop;
+using PbkService.Requests;
 using PbkService.Services;
 using PbkService.ViewModels;
 
@@ -15,11 +16,11 @@ namespace PbkService.Controllers.Operator
 
         [HttpGet]
         [Authorize]
-        public IActionResult GetShops()
+        public IActionResult GetPagedBanks([FromQuery] GetPagedRequest request)
         {
             try
             {
-                IEnumerable<ShopDTO> shops = _shopService.GetShops();
+                PagedList<ShopDTO> shops = _shopService.GetPagedList(request);
                 return Ok(shops);
             }
             catch (Exception ex)

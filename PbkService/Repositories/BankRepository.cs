@@ -1,5 +1,6 @@
 ﻿using PbkService.Data;
 using PbkService.Models;
+using X.PagedList;
 
 namespace PbkService.Repositories
 {
@@ -15,6 +16,17 @@ namespace PbkService.Repositories
         public IEnumerable<Bank?> GetBanks()
         {
             return [.. _context.Banks];
+        }
+
+        public IPagedList<Bank> GetPagedBanks(int pageNumber, int pageSize, string? searchString = null)
+        {
+            IQueryable<Bank> query = _context.Banks;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                query = query.Where(bank => bank.Name.Contains(searchString));
+            }
+            query = query.OrderBy(bank => bank.Id);
+            return query.ToPagedList(pageNumber, pageSize);
         }
 
         public int Create(Bank bank)
