@@ -34,6 +34,8 @@ namespace PbkService
             services.AddScoped<BankService>();
             services.AddScoped<TypeCardRepository>();
             services.AddScoped<TypeCardService>();
+            services.AddScoped<ShopRepository>();
+            services.AddScoped<ShopService>();
         }
 
 
