@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PbkService.Data;
+﻿using PbkService.Data;
 using PbkService.Models;
 
 namespace PbkService.Repositories

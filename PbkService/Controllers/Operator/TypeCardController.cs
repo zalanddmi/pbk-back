@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PbkService.Auxiliaries;
-using PbkService.Auxiliaries.Exceptions.Bank;
+using PbkService.Auxiliaries.Exceptions.TypeCard;
 using PbkService.Services;
 using PbkService.ViewModels;
 
@@ -9,18 +9,18 @@ namespace PbkService.Controllers.Operator
 {
     [Route("api/operator/[controller]")]
     [ApiController]
-    public class BankController(BankService bankService) : Controller
+    public class TypeCardController(TypeCardService typeCardService) : Controller
     {
-        private readonly BankService _bankService = bankService;
+        private readonly TypeCardService _typeCardService = typeCardService;
 
         [HttpGet]
         [Authorize]
-        public IActionResult GetBanks()
+        public IActionResult GetTypeCards()
         {
             try
             {
-                IEnumerable<BankDTO> banks = _bankService.GetBanks();
-                return Ok(banks);
+                IEnumerable<TypeCardDTO> typeCards = _typeCardService.GetTypeCards();
+                return Ok(typeCards);
             }
             catch (Exception ex)
             {
@@ -34,18 +34,18 @@ namespace PbkService.Controllers.Operator
 
         [HttpGet("{id}")]
         [Authorize]
-        public IActionResult GetBankById(int id)
+        public IActionResult GetTypeCardById(int id)
         {
             try
             {
-                BankDTO bank = _bankService.GetBankById(id);
-                return Ok(bank);
+                TypeCardDTO typeCard = _typeCardService.GetTypeCardById(id);
+                return Ok(typeCard);
             }
-            catch (BankNotExists ex)
+            catch (TypeCardNotExists ex)
             {
                 Error error = new()
                 {
-                    Code = nameof(BankNotExists),
+                    Code = nameof(TypeCardNotExists),
                     Message = ex.Message
                 };
                 return BadRequest(error);
@@ -62,11 +62,11 @@ namespace PbkService.Controllers.Operator
 
         [HttpPost]
         [Authorize]
-        public IActionResult Create(BankDTO bank)
+        public IActionResult Create(TypeCardDTO typeCard)
         {
             try
             {
-                int id = _bankService.Create(bank);
+                int id = _typeCardService.Create(typeCard);
                 return Ok(id);
             }
             catch (Exception ex)
@@ -81,18 +81,18 @@ namespace PbkService.Controllers.Operator
 
         [HttpPut]
         [Authorize]
-        public IActionResult Update(BankDTO bank) 
+        public IActionResult Update(TypeCardDTO typeCard)
         {
             try
             {
-                _bankService.Update(bank);
+                _typeCardService.Update(typeCard);
                 return Ok();
             }
-            catch (BankNotExists ex)
+            catch (TypeCardNotExists ex)
             {
                 Error error = new()
                 {
-                    Code = nameof(BankNotExists),
+                    Code = nameof(TypeCardNotExists),
                     Message = ex.Message
                 };
                 return BadRequest(error);
@@ -113,14 +113,14 @@ namespace PbkService.Controllers.Operator
         {
             try
             {
-                _bankService.Delete(id);
+                _typeCardService.Delete(id);
                 return Ok();
             }
-            catch (BankNotExists ex)
+            catch (TypeCardNotExists ex)
             {
                 Error error = new()
                 {
-                    Code = nameof(BankNotExists),
+                    Code = nameof(TypeCardNotExists),
                     Message = ex.Message
                 };
                 return BadRequest(error);
