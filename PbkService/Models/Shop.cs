@@ -9,6 +9,6 @@ namespace PbkService.Models
         [MaxLength(255)]
         public required string Name { get; set; }
 
-        public virtual ICollection<Outlet>? Outlet { get; set; }
+        public virtual ICollection<Outlet>? Outlets { get; set; }
     }
 }

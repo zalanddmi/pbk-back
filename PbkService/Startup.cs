@@ -23,7 +23,7 @@ namespace PbkService
 
             services.AddDbContext<PbkContext>(options =>
             {
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseLazyLoadingProxies().UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
             });
 
             services.AddScoped<AccountService>();
@@ -36,6 +36,8 @@ namespace PbkService
             services.AddScoped<TypeCardService>();
             services.AddScoped<ShopRepository>();
             services.AddScoped<ShopService>();
+            services.AddScoped<OutletRepository>();
+            services.AddScoped<OutletService>();
         }
 
 

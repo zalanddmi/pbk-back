@@ -1,27 +1,29 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PbkService.Auxiliaries;
 using PbkService.Auxiliaries.Exceptions.Shop;
+using PbkService.Auxiliaries;
 using PbkService.Requests;
 using PbkService.Services;
 using PbkService.ViewModels;
+using PbkService.Auxiliaries.Exceptions.Outlet;
+using PbkService.Auxiliaries.Exceptions.Mcc;
 
 namespace PbkService.Controllers.Operator
 {
     [Route("api/operator/[controller]")]
     [ApiController]
-    public class ShopController(ShopService shopService) : Controller
+    public class OutletController(OutletService outletService) : Controller
     {
-        private readonly ShopService _shopService = shopService;
+        private readonly OutletService _outletService = outletService;
 
         [HttpGet]
         [Authorize]
-        public IActionResult GetPagedBanks([FromQuery] GetPagedRequest request)
+        public IActionResult GetPagedOutlets([FromQuery] GetPagedRequest request)
         {
             try
             {
-                PbkPagedList<ShopDTO> shops = _shopService.GetPagedList(request);
-                return Ok(shops);
+                PbkPagedList<OutletDTO> outlets = _outletService.GetPagedList(request);
+                return Ok(outlets);
             }
             catch (Exception ex)
             {
@@ -35,18 +37,18 @@ namespace PbkService.Controllers.Operator
 
         [HttpGet("{id}")]
         [Authorize]
-        public IActionResult GetShopById(int id)
+        public IActionResult GetOutletById(int id)
         {
             try
             {
-                ShopDTO shop = _shopService.GetShopById(id);
-                return Ok(shop);
+                OutletDTO outlet = _outletService.GetById(id);
+                return Ok(outlet);
             }
-            catch (ShopNotExists ex)
+            catch (OutletNotExists ex)
             {
                 Error error = new()
                 {
-                    Code = nameof(ShopNotExists),
+                    Code = nameof(OutletNotExists),
                     Message = ex.Message
                 };
                 return BadRequest(error);
@@ -63,12 +65,30 @@ namespace PbkService.Controllers.Operator
 
         [HttpPost]
         [Authorize]
-        public IActionResult Create(ShopDTO shop)
+        public IActionResult Create(OutletDTO outlet)
         {
             try
             {
-                int id = _shopService.Create(shop);
+                int id = _outletService.Create(outlet);
                 return Ok(id);
+            }
+            catch (ShopNotExists ex)
+            {
+                Error error = new()
+                {
+                    Code = nameof(ShopNotExists),
+                    Message = ex.Message
+                };
+                return BadRequest(error);
+            }
+            catch (MccNotExists ex)
+            {
+                Error error = new()
+                {
+                    Code = nameof(MccNotExists),
+                    Message = ex.Message
+                };
+                return BadRequest(error);
             }
             catch (Exception ex)
             {
@@ -82,18 +102,36 @@ namespace PbkService.Controllers.Operator
 
         [HttpPut]
         [Authorize]
-        public IActionResult Update(ShopDTO shop)
+        public IActionResult Update(OutletDTO outlet)
         {
             try
             {
-                _shopService.Update(shop);
+                _outletService.Update(outlet);
                 return Ok();
+            }
+            catch (OutletNotExists ex)
+            {
+                Error error = new()
+                {
+                    Code = nameof(OutletNotExists),
+                    Message = ex.Message
+                };
+                return BadRequest(error);
             }
             catch (ShopNotExists ex)
             {
                 Error error = new()
                 {
                     Code = nameof(ShopNotExists),
+                    Message = ex.Message
+                };
+                return BadRequest(error);
+            }
+            catch (MccNotExists ex)
+            {
+                Error error = new()
+                {
+                    Code = nameof(MccNotExists),
                     Message = ex.Message
                 };
                 return BadRequest(error);
@@ -114,14 +152,14 @@ namespace PbkService.Controllers.Operator
         {
             try
             {
-                _shopService.Delete(id);
+                _outletService.Delete(id);
                 return Ok();
             }
-            catch (ShopNotExists ex)
+            catch (OutletNotExists ex)
             {
                 Error error = new()
                 {
-                    Code = nameof(ShopNotExists),
+                    Code = nameof(OutletNotExists),
                     Message = ex.Message
                 };
                 return BadRequest(error);

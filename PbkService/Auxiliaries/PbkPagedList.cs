@@ -1,6 +1,6 @@
 ﻿namespace PbkService.Auxiliaries
 {
-    public class PagedList<T> where T : class
+    public class PbkPagedList<T> where T : class
     {
         public required int PageNumber { get; init; }
         public required int PageSize { get; init; }

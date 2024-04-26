@@ -1,4 +1,5 @@
-﻿using PbkService.Auxiliaries.Exceptions.Bank;
+﻿using PbkService.Auxiliaries;
+using PbkService.Auxiliaries.Exceptions.Bank;
 using PbkService.Models;
 using PbkService.Repositories;
 using PbkService.Requests;
@@ -34,7 +35,7 @@ namespace PbkService.Services
             return banksDTO;
         }
 
-        public Auxiliaries.PagedList<BankDTO> GetPagedList(GetPagedRequest request) 
+        public PbkPagedList<BankDTO> GetPagedList(GetPagedRequest request) 
         {
             IPagedList<Bank> banks = _bankRepository.GetPagedBanks(request.PageNumber, request.PageSize, request.SearchString);
             List<BankDTO> bankDTOs = [];
@@ -42,7 +43,7 @@ namespace PbkService.Services
             {
                 bankDTOs.Add(new BankDTO(bank.Name, bank.Id));
             }
-            Auxiliaries.PagedList<BankDTO> pagedList = new()
+            PbkPagedList<BankDTO> pagedList = new()
             {
                 PageNumber = banks.PageNumber,
                 PageSize = banks.PageSize,

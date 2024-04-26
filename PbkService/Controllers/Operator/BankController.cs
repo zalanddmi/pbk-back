@@ -20,7 +20,7 @@ namespace PbkService.Controllers.Operator
         {
             try
             {
-                PagedList<BankDTO> banks = _bankService.GetPagedList(request);
+                PbkPagedList<BankDTO> banks = _bankService.GetPagedList(request);
                 return Ok(banks);
             }
             catch (Exception ex)

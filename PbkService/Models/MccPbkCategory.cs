@@ -9,8 +9,8 @@ namespace PbkService.Models
         public required string MccCode { get; set; }
         public required int PbkCategoryId { get; set; }
         [ForeignKey(nameof(MccCode))]
-        public required Mcc Mcc { get; set; }
+        public virtual Mcc Mcc { get; set; }
         [ForeignKey(nameof(PbkCategoryId))]
-        public required PbkCategory PbkCategory { get; set; }
+        public virtual PbkCategory PbkCategory { get; set; }
     }
 }

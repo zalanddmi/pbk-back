@@ -1,4 +1,5 @@
-﻿using PbkService.Auxiliaries.Exceptions.Shop;
+﻿using PbkService.Auxiliaries;
+using PbkService.Auxiliaries.Exceptions.Shop;
 using PbkService.Models;
 using PbkService.Repositories;
 using PbkService.Requests;
@@ -14,7 +15,15 @@ namespace PbkService.Services
         public ShopDTO GetShopById(int id)
         {
             Shop? shop = _shopRepository.GetShopById(id) ?? throw new ShopNotExists($"Магазин с id = {id} не найден.");
-            ShopDTO shopDTO = new(shop.Name, shop.Id);
+            List<DisplayModel<int>> outlets = [];
+            if (shop.Outlets != null)
+            {
+                foreach (Outlet outlet in shop.Outlets)
+                {
+                    outlets.Add(new DisplayModel<int> { Id = outlet.Id, DisplayName = outlet.Name });
+                }
+            }
+            ShopDTO shopDTO = new(shop.Name, outlets, shop.Id);
             return shopDTO;
         }
 
@@ -28,27 +37,44 @@ namespace PbkService.Services
             List<ShopDTO> shopsDTO = [];
             foreach (Shop shop in shops)
             {
-                ShopDTO shopDTO = new(shop.Name, shop.Id);
+                List<DisplayModel<int>> outlets = [];
+                if (shop.Outlets != null)
+                {
+                    foreach (Outlet outlet in shop.Outlets)
+                    {
+                        outlets.Add(new DisplayModel<int> { Id = outlet.Id, DisplayName = outlet.Name });
+                    }
+                }
+                ShopDTO shopDTO = new(shop.Name, outlets, shop.Id);
                 shopsDTO.Add(shopDTO);
             }
             return shopsDTO;
         }
 
-        public Auxiliaries.PagedList<ShopDTO> GetPagedList(GetPagedRequest request)
+        public PbkPagedList<ShopDTO> GetPagedList(GetPagedRequest request)
         {
             IPagedList<Shop> shops = _shopRepository.GetPagedShops(request.PageNumber, request.PageSize, request.SearchString);
-            List<ShopDTO> shopDTOs = [];
+            List<ShopDTO> shopsDTO = [];
             foreach (Shop shop in shops)
             {
-                shopDTOs.Add(new ShopDTO(shop.Name, shop.Id));
+                List<DisplayModel<int>> outlets = [];
+                if (shop.Outlets != null)
+                {
+                    foreach (Outlet outlet in shop.Outlets)
+                    {
+                        outlets.Add(new DisplayModel<int> { Id = outlet.Id, DisplayName = outlet.Name });
+                    }
+                }
+                ShopDTO shopDTO = new(shop.Name, outlets, shop.Id);
+                shopsDTO.Add(shopDTO);
             }
-            Auxiliaries.PagedList<ShopDTO> pagedList = new()
+            PbkPagedList<ShopDTO> pagedList = new()
             {
                 PageNumber = shops.PageNumber,
                 PageSize = shops.PageSize,
                 PageCount = shops.PageCount,
                 TotalCount = shops.TotalItemCount,
-                Items = shopDTOs
+                Items = shopsDTO
             };
             return pagedList;
         }

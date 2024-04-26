@@ -11,9 +11,9 @@ namespace PbkService.Models
         public required string Name { get; set; }
         public required int ShopId { get; set; }
         [ForeignKey(nameof(ShopId))]
-        public required Shop Shop { get; set; }
+        public virtual Shop Shop { get; set; }
         public required string MccCode { get; set; }
         [ForeignKey(nameof(MccCode))]
-        public required Mcc Mcc { get; set; }
+        public virtual Mcc Mcc { get; set; }
     }
 }
