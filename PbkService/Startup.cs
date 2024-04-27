@@ -38,6 +38,9 @@ namespace PbkService
             services.AddScoped<ShopService>();
             services.AddScoped<OutletRepository>();
             services.AddScoped<OutletService>();
+            services.AddScoped<PbkCategoryRepository>();
+            services.AddScoped<PbkCategoryService>();
+            services.AddScoped<MccPbkCategoryRepository>();
         }
 
 

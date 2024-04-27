@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PbkService.Auxiliaries;
-using PbkService.Auxiliaries.Exceptions.Shop;
+using PbkService.Auxiliaries.Exceptions.Mcc;
+using PbkService.Auxiliaries.Exceptions.PbkCategory;
 using PbkService.Requests;
 using PbkService.Services;
 using PbkService.ViewModels;
@@ -10,18 +11,18 @@ namespace PbkService.Controllers.Operator
 {
     [Route("api/operator/[controller]")]
     [ApiController]
-    public class ShopController(ShopService shopService) : Controller
+    public class PbkCategoryController(PbkCategoryService categoryService) : Controller
     {
-        private readonly ShopService _shopService = shopService;
+        private readonly PbkCategoryService _categoryService = categoryService;
 
         [HttpGet]
         [Authorize]
-        public IActionResult GetPagedShops([FromQuery] GetPagedRequest request)
+        public IActionResult GetPagedCategories([FromQuery] GetPagedRequest request)
         {
             try
             {
-                PbkPagedList<ShopDTO> shops = _shopService.GetPagedList(request);
-                return Ok(shops);
+                PbkPagedList<PbkCategoryDTO> categories = _categoryService.GetPagedList(request);
+                return Ok(categories);
             }
             catch (Exception ex)
             {
@@ -35,18 +36,18 @@ namespace PbkService.Controllers.Operator
 
         [HttpGet("{id}")]
         [Authorize]
-        public IActionResult GetShopById(int id)
+        public IActionResult GetCategoryById(int id)
         {
             try
             {
-                ShopDTO shop = _shopService.GetShopById(id);
-                return Ok(shop);
+                PbkCategoryDTO category = _categoryService.GetById(id);
+                return Ok(category);
             }
-            catch (ShopNotExists ex)
+            catch (PbkCategoryNotExists ex)
             {
                 Error error = new()
                 {
-                    Code = nameof(ShopNotExists),
+                    Code = nameof(PbkCategoryNotExists),
                     Message = ex.Message
                 };
                 return BadRequest(error);
@@ -63,12 +64,21 @@ namespace PbkService.Controllers.Operator
 
         [HttpPost]
         [Authorize]
-        public IActionResult Create(ShopDTO shop)
+        public IActionResult Create(PbkCategoryDTO category)
         {
             try
             {
-                int id = _shopService.Create(shop);
+                int id = _categoryService.Create(category);
                 return Ok(id);
+            }
+            catch (MccNotExists ex)
+            {
+                Error error = new()
+                {
+                    Code = nameof(MccNotExists),
+                    Message = ex.Message
+                };
+                return BadRequest(error);
             }
             catch (Exception ex)
             {
@@ -82,18 +92,18 @@ namespace PbkService.Controllers.Operator
 
         [HttpPut]
         [Authorize]
-        public IActionResult Update(ShopDTO shop)
+        public IActionResult Update(PbkCategoryDTO category)
         {
             try
             {
-                _shopService.Update(shop);
+                _categoryService.Update(category);
                 return Ok();
             }
-            catch (ShopNotExists ex)
+            catch (PbkCategoryNotExists ex)
             {
                 Error error = new()
                 {
-                    Code = nameof(ShopNotExists),
+                    Code = nameof(PbkCategoryNotExists),
                     Message = ex.Message
                 };
                 return BadRequest(error);
@@ -114,14 +124,14 @@ namespace PbkService.Controllers.Operator
         {
             try
             {
-                _shopService.Delete(id);
+                _categoryService.Delete(id);
                 return Ok();
             }
-            catch (ShopNotExists ex)
+            catch (PbkCategoryNotExists ex)
             {
                 Error error = new()
                 {
-                    Code = nameof(ShopNotExists),
+                    Code = nameof(PbkCategoryNotExists),
                     Message = ex.Message
                 };
                 return BadRequest(error);

@@ -1,5 +1,6 @@
 ﻿using PbkService.Data;
 using PbkService.Models;
+using X.PagedList;
 
 namespace PbkService.Repositories
 {
@@ -15,6 +16,17 @@ namespace PbkService.Repositories
         public List<Mcc> GetMccs()
         {
             return [.. _context.MCCs];
+        }
+
+        public IPagedList<Mcc> GetPagedMccs(int pageNumber, int pageSize, string? searchString = null)
+        {
+            IQueryable<Mcc> query = _context.MCCs;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                query = query.Where(mcc => mcc.Name.Contains(searchString) || mcc.Code.Contains(searchString));
+            }
+            query = query.OrderBy(mcc => mcc.Code);
+            return query.ToPagedList(pageNumber, pageSize);
         }
 
         public void Create(Mcc mcc)
