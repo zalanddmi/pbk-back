@@ -11,10 +11,10 @@ namespace PbkService.Models
         public required string Name { get; set; }
         public required int BankId { get; set; }
         [ForeignKey(nameof(BankId))]
-        public required Bank Bank { get; set; }
+        public virtual Bank Bank { get; set; }
         public required int TypeCardId { get; set; }
         [ForeignKey(nameof(TypeCardId))]
-        public required TypeCard TypeCard { get; set; }
+        public virtual TypeCard TypeCard { get; set; }
 
         public virtual ICollection<Cashback>? Cashbacks { get; set; }
     }

@@ -1,27 +1,39 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PbkService.Auxiliaries;
+using PbkService.Requests;
 using PbkService.Services;
 
-namespace PbkService.Controllers
+namespace PbkService.Controllers.Operator
 {
-    [Route("api/[controller]")]
+    [Route("api/operator/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Operator")]
     public class MccController(MccService service) : Controller
     {
         private readonly MccService _service = service;
 
         [HttpGet]
-        [Authorize]
-        public IActionResult GetMcc()
+        public IActionResult GetPagedList([FromQuery] GetPagedRequest request)
         {
-            return Ok(_service.GetAll());
+            try
+            {
+                return Ok(_service.GetPagedList(request));
+            }
+            catch (Exception ex)
+            {
+                Error error = new()
+                {
+                    Message = ex.Message
+                };
+                return BadRequest(error);
+            }
         }
 
         /// <summary>
         /// Временное решение для импорта серверного файла с MCC-кодами
         /// </summary>
         [HttpPost("import")]
-        [Authorize]
         public IActionResult Import(IFormFile formFile)
         {
             try
@@ -31,7 +43,11 @@ namespace PbkService.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { error = ex.Message });
+                Error error = new()
+                {
+                    Message = ex.Message
+                };
+                return BadRequest(error);
             }
         }
     }

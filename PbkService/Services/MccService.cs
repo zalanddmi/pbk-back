@@ -1,6 +1,10 @@
 ﻿using Aspose.Cells;
+using PbkService.Auxiliaries;
 using PbkService.Models;
 using PbkService.Repositories;
+using PbkService.Requests;
+using PbkService.ViewModels;
+using X.PagedList;
 
 namespace PbkService.Services
 {
@@ -8,9 +12,23 @@ namespace PbkService.Services
     {
         private readonly MccRepository _repository = repository;
 
-        public List<Mcc> GetAll()
+        public PbkPagedList<MccDTO> GetPagedList(GetPagedRequest request)
         {
-            return _repository.GetMccs();
+            IPagedList<Mcc> mccs = _repository.GetPagedList(request.PageNumber, request.PageSize, request.SearchString);
+            List<MccDTO> mccsDTO = [];
+            foreach (Mcc mcc in mccs)
+            {
+                mccsDTO.Add(new MccDTO(mcc.Code, mcc.Name, mcc.Description));
+            }
+            PbkPagedList<MccDTO> pagedList = new()
+            {
+                PageNumber = mccs.PageNumber,
+                PageSize = mccs.PageSize,
+                PageCount = mccs.PageCount,
+                TotalCount = mccs.TotalItemCount,
+                Items = mccsDTO
+            };
+            return pagedList;
         }
 
         public void LoadMccDataFromFile(IFormFile formFile)

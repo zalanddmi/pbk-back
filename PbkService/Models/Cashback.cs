@@ -10,10 +10,10 @@ namespace PbkService.Models
         public int Id { get; set; }
         public required int CardId { get; set; }
         [ForeignKey(nameof(CardId))]
-        public required Card Card { get; set; }
+        public virtual Card Card { get; set; }
         public required int PbkCategoryId { get; set; }
         [ForeignKey(nameof(PbkCategoryId))]
-        public required PbkCategory PbkCategory { get; set; }
+        public virtual PbkCategory PbkCategory { get; set; }
         [Precision(4, 2)]
         public required decimal Percent { get; set; }
     }
