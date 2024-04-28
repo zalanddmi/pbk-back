@@ -18,34 +18,16 @@ namespace PbkService.Services
 
         public OutletDTO GetById(int id)
         {
-            Outlet? outlet = _outletRepository.GetOutletById(id) ?? throw new OutletNotExists($"Торговая точка с id = {id} не найдена.");
+            Outlet? outlet = _outletRepository.GetById(id) ?? throw new OutletNotExists($"Торговая точка с id = {id} не найдена.");
             DisplayModel<int> shop = new() { Id = outlet.ShopId, DisplayName = outlet.Shop.Name };
             DisplayModel<string> mcc = new () { Id = outlet.MccCode, DisplayName = outlet.Mcc.Name };
             OutletDTO outletDTO = new(outlet.Name, shop, mcc, outlet.Id);
             return outletDTO;
         }
 
-        public IEnumerable<OutletDTO> Get()
-        {
-            IEnumerable<Outlet?> outlets = _outletRepository.GetOutlets();
-            if (outlets == null)
-            {
-                return [];
-            }
-            List<OutletDTO> outletsDTO = [];
-            foreach (Outlet outlet in outlets)
-            {
-                DisplayModel<int> shop = new() { Id = outlet.ShopId, DisplayName = outlet.Shop.Name };
-                DisplayModel<string> mcc = new() { Id = outlet.MccCode, DisplayName = outlet.Mcc.Name };
-                OutletDTO outletDTO = new(outlet.Name, shop, mcc, outlet.Id);
-                outletsDTO.Add(outletDTO);
-            }
-            return outletsDTO;
-        }
-
         public PbkPagedList<OutletDTO> GetPagedList(GetPagedRequest request)
         {
-            IPagedList<Outlet> outlets = _outletRepository.GetPagedOutlets(request.PageNumber, request.PageSize, request.SearchString);
+            IPagedList<Outlet> outlets = _outletRepository.GetPagedList(request.PageNumber, request.PageSize, request.SearchString);
             List<OutletDTO> outletsDTO = [];
             foreach (Outlet outlet in outlets)
             {
@@ -66,7 +48,7 @@ namespace PbkService.Services
 
         public int Create(OutletDTO outletDTO)
         {
-            Shop shop = _shopRepository.GetShopById(outletDTO.Shop.Id) ?? throw new ShopNotExists($"Магазин с id = {outletDTO.Shop.Id} не найден.");
+            Shop shop = _shopRepository.GetById(outletDTO.Shop.Id) ?? throw new ShopNotExists($"Магазин с id = {outletDTO.Shop.Id} не найден.");
             Mcc mcc = _mccRepository.GetMccByCode(outletDTO.Mcc.Id) ?? throw new MccNotExists($"MCC с кодом = {outletDTO.Mcc.Id} не найден.");
             Outlet outlet = new()
             {
@@ -82,8 +64,8 @@ namespace PbkService.Services
 
         public void Update(OutletDTO outletDTO)
         {
-            Outlet? outlet = _outletRepository.GetOutletById(outletDTO.Id) ?? throw new OutletNotExists($"Торговая точка с id = {outletDTO.Id} не найдена.");
-            Shop shop = _shopRepository.GetShopById(outletDTO.Shop.Id) ?? throw new ShopNotExists($"Магазин с id = {outletDTO.Shop.Id} не найден.");
+            Outlet? outlet = _outletRepository.GetById(outletDTO.Id) ?? throw new OutletNotExists($"Торговая точка с id = {outletDTO.Id} не найдена.");
+            Shop shop = _shopRepository.GetById(outletDTO.Shop.Id) ?? throw new ShopNotExists($"Магазин с id = {outletDTO.Shop.Id} не найден.");
             Mcc mcc = _mccRepository.GetMccByCode(outletDTO.Mcc.Id) ?? throw new MccNotExists($"MCC с кодом = {outletDTO.Mcc.Id} не найден.");
             outlet.Name = outletDTO.Name;
             outlet.ShopId = shop.Id;
@@ -95,7 +77,7 @@ namespace PbkService.Services
 
         public void Delete(int id)
         {
-            Outlet? outlet = _outletRepository.GetOutletById(id) ?? throw new OutletNotExists($"Торговая точка с id = {id} не найдена.");
+            Outlet? outlet = _outletRepository.GetById(id) ?? throw new OutletNotExists($"Торговая точка с id = {id} не найдена.");
             _outletRepository.Delete(outlet);
         }
     }

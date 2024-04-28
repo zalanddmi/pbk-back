@@ -16,7 +16,7 @@ namespace PbkService.Controllers.Operator
 
         [HttpGet]
         [Authorize]
-        public IActionResult GetPagedShops([FromQuery] GetPagedRequest request)
+        public IActionResult GetPagedList([FromQuery] GetPagedRequest request)
         {
             try
             {
@@ -35,11 +35,11 @@ namespace PbkService.Controllers.Operator
 
         [HttpGet("{id}")]
         [Authorize]
-        public IActionResult GetShopById(int id)
+        public IActionResult GetById(int id)
         {
             try
             {
-                ShopDTO shop = _shopService.GetShopById(id);
+                ShopDTO shop = _shopService.GetById(id);
                 return Ok(shop);
             }
             catch (ShopNotExists ex)

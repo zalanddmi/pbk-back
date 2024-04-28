@@ -8,7 +8,7 @@ namespace PbkService.Repositories
     {
         private readonly PbkContext _context = context;
 
-        public Bank? GetBankById(int id)
+        public Bank? GetById(int id)
         {
             return _context.Banks.FirstOrDefault(bank => bank.Id == id);
         }
@@ -18,7 +18,7 @@ namespace PbkService.Repositories
             return [.. _context.Banks];
         }
 
-        public IPagedList<Bank> GetPagedBanks(int pageNumber, int pageSize, string? searchString = null)
+        public IPagedList<Bank> GetPagedList(int pageNumber, int pageSize, string? searchString = null)
         {
             IQueryable<Bank> query = _context.Banks;
             if (!string.IsNullOrEmpty(searchString))

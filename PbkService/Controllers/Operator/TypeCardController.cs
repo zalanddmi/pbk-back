@@ -15,11 +15,11 @@ namespace PbkService.Controllers.Operator
 
         [HttpGet]
         [Authorize]
-        public IActionResult GetTypeCards()
+        public IActionResult Get()
         {
             try
             {
-                IEnumerable<TypeCardDTO> typeCards = _typeCardService.GetTypeCards();
+                IEnumerable<TypeCardDTO> typeCards = _typeCardService.Get();
                 return Ok(typeCards);
             }
             catch (Exception ex)
@@ -34,11 +34,11 @@ namespace PbkService.Controllers.Operator
 
         [HttpGet("{id}")]
         [Authorize]
-        public IActionResult GetTypeCardById(int id)
+        public IActionResult GetById(int id)
         {
             try
             {
-                TypeCardDTO typeCard = _typeCardService.GetTypeCardById(id);
+                TypeCardDTO typeCard = _typeCardService.GetById(id);
                 return Ok(typeCard);
             }
             catch (TypeCardNotExists ex)

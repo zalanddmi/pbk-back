@@ -12,14 +12,9 @@ namespace PbkService.Services
     {
         private readonly MccRepository _repository = repository;
 
-        public List<Mcc> GetAll()
-        {
-            return _repository.GetMccs();
-        }
-
         public PbkPagedList<MccDTO> GetPagedList(GetPagedRequest request)
         {
-            IPagedList<Mcc> mccs = _repository.GetPagedMccs(request.PageNumber, request.PageSize, request.SearchString);
+            IPagedList<Mcc> mccs = _repository.GetPagedList(request.PageNumber, request.PageSize, request.SearchString);
             List<MccDTO> mccsDTO = [];
             foreach (Mcc mcc in mccs)
             {

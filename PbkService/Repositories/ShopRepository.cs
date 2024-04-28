@@ -8,7 +8,7 @@ namespace PbkService.Repositories
     {
         private readonly PbkContext _context = context;
 
-        public Shop? GetShopById(int id)
+        public Shop? GetById(int id)
         {
             return _context.Shops.FirstOrDefault(shop => shop.Id == id);
         }
@@ -18,7 +18,7 @@ namespace PbkService.Repositories
             return [.. _context.Shops];
         }
 
-        public IPagedList<Shop> GetPagedShops(int pageNumber, int pageSize, string? searchString = null)
+        public IPagedList<Shop> GetPagedList(int pageNumber, int pageSize, string? searchString = null)
         {
             IQueryable<Shop> query = _context.Shops;
             if (!string.IsNullOrEmpty(searchString))

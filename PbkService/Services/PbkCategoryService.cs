@@ -18,7 +18,7 @@ namespace PbkService.Services
 
         public PbkCategoryDTO GetById(int id)
         {
-            PbkCategory? category = _pbkCategoryRepository.GetPbkCategoryById(id) ?? throw new PbkCategoryNotExists($"Категория с id = {id} не найдена.");
+            PbkCategory? category = _pbkCategoryRepository.GetById(id) ?? throw new PbkCategoryNotExists($"Категория с id = {id} не найдена.");
             List<DisplayModel<string>> mccs = [];
             if (category.MccPbkCategories != null)
             {
@@ -31,33 +31,9 @@ namespace PbkService.Services
             return categoryDTO;
         }
 
-        public IEnumerable<PbkCategoryDTO> Get()
-        {
-            IEnumerable<PbkCategory?> categories = _pbkCategoryRepository.GetPbkCategories();
-            if (categories == null)
-            {
-                return [];
-            }
-            List<PbkCategoryDTO> categoriesDTO = [];
-            foreach (PbkCategory category in categories)
-            {
-                List<DisplayModel<string>> mccs = [];
-                if (category.MccPbkCategories != null)
-                {
-                    foreach (MccPbkCategory mccPbkCategory in category.MccPbkCategories)
-                    {
-                        mccs.Add(new DisplayModel<string> { Id = mccPbkCategory.MccCode, DisplayName = mccPbkCategory.Mcc.Name });
-                    }
-                }
-                PbkCategoryDTO categoryDTO = new(category.Name, mccs, category.Id);
-                categoriesDTO.Add(categoryDTO);
-            }
-            return categoriesDTO;
-        }
-
         public PbkPagedList<PbkCategoryDTO> GetPagedList(GetPagedRequest request)
         {
-            IPagedList<PbkCategory> categories = _pbkCategoryRepository.GetPagedPbkCategories(request.PageNumber, request.PageSize, request.SearchString);
+            IPagedList<PbkCategory> categories = _pbkCategoryRepository.GetPagedList(request.PageNumber, request.PageSize, request.SearchString);
             List<PbkCategoryDTO> categoriesDTO = [];
             foreach (PbkCategory category in categories)
             {
@@ -118,7 +94,7 @@ namespace PbkService.Services
 
         public void Update(PbkCategoryDTO categoryDTO)
         {
-            PbkCategory? category = _pbkCategoryRepository.GetPbkCategoryById(categoryDTO.Id) ?? throw new PbkCategoryNotExists($"Категория с id = {categoryDTO.Id} не найдена.");
+            PbkCategory? category = _pbkCategoryRepository.GetById(categoryDTO.Id) ?? throw new PbkCategoryNotExists($"Категория с id = {categoryDTO.Id} не найдена.");
             category.Name = categoryDTO.Name;
             IEnumerable<MccPbkCategory?> mcs = _mccPbkCategoryRepository.GetByCategoryId(categoryDTO.Id);
             List<MccPbkCategory> mcsCreate = [];
@@ -160,7 +136,7 @@ namespace PbkService.Services
 
         public void Delete(int id)
         {
-            PbkCategory? category = _pbkCategoryRepository.GetPbkCategoryById(id) ?? throw new PbkCategoryNotExists($"Категория с id = {id} не найдена.");
+            PbkCategory? category = _pbkCategoryRepository.GetById(id) ?? throw new PbkCategoryNotExists($"Категория с id = {id} не найдена.");
             IEnumerable<MccPbkCategory?> mcs = _mccPbkCategoryRepository.GetByCategoryId(category.Id);
             _mccPbkCategoryRepository.Delete(mcs);
             _pbkCategoryRepository.Delete(category);

@@ -18,7 +18,7 @@ namespace PbkService.Controllers.Operator
 
         [HttpGet]
         [Authorize]
-        public IActionResult GetPagedOutlets([FromQuery] GetPagedRequest request)
+        public IActionResult GetPagedList([FromQuery] GetPagedRequest request)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace PbkService.Controllers.Operator
 
         [HttpGet("{id}")]
         [Authorize]
-        public IActionResult GetOutletById(int id)
+        public IActionResult GetById(int id)
         {
             try
             {

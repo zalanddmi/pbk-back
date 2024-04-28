@@ -9,16 +9,16 @@ namespace PbkService.Services
     {
         private readonly TypeCardRepository _typeCardRepository = typeCardRepository;
 
-        public TypeCardDTO GetTypeCardById(int id)
+        public TypeCardDTO GetById(int id)
         {
-            TypeCard? typeCard = _typeCardRepository.GetTypeCardById(id) ?? throw new TypeCardNotExists($"Тип карты с id = {id} не найден.");
+            TypeCard? typeCard = _typeCardRepository.GetById(id) ?? throw new TypeCardNotExists($"Тип карты с id = {id} не найден.");
             TypeCardDTO typeCardDTO = new(typeCard.Name, typeCard.Id);
             return typeCardDTO;
         }
 
-        public IEnumerable<TypeCardDTO> GetTypeCards()
+        public IEnumerable<TypeCardDTO> Get()
         {
-            IEnumerable<TypeCard?> typeCards = _typeCardRepository.GetTypeCards();
+            IEnumerable<TypeCard?> typeCards = _typeCardRepository.Get();
             if (typeCards == null)
             {
                 return [];
@@ -44,14 +44,14 @@ namespace PbkService.Services
 
         public void Update(TypeCardDTO typeCardDTO)
         {
-            TypeCard? typeCard = _typeCardRepository.GetTypeCardById(typeCardDTO.Id) ?? throw new TypeCardNotExists($"Тип карты с id = {typeCardDTO.Id} не найден.");
+            TypeCard? typeCard = _typeCardRepository.GetById(typeCardDTO.Id) ?? throw new TypeCardNotExists($"Тип карты с id = {typeCardDTO.Id} не найден.");
             typeCard.Name = typeCardDTO.Name;
             _typeCardRepository.Update(typeCard);
         }
 
         public void Delete(int id)
         {
-            TypeCard? typeCard = _typeCardRepository.GetTypeCardById(id) ?? throw new TypeCardNotExists($"Тип карты с id = {id} не найден.");
+            TypeCard? typeCard = _typeCardRepository.GetById(id) ?? throw new TypeCardNotExists($"Тип карты с id = {id} не найден.");
             _typeCardRepository.Delete(typeCard);
         }
     }

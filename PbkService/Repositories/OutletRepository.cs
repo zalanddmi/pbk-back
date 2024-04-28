@@ -8,7 +8,7 @@ namespace PbkService.Repositories
     {
         private readonly PbkContext _context = context;
 
-        public Outlet? GetOutletById(int id)
+        public Outlet? GetById(int id)
         {
             return _context.Outlets.FirstOrDefault(outlet => outlet.Id == id);
         }
@@ -18,7 +18,7 @@ namespace PbkService.Repositories
             return [.. _context.Outlets];
         }
 
-        public IPagedList<Outlet> GetPagedOutlets(int pageNumber, int pageSize, string? searchString = null)
+        public IPagedList<Outlet> GetPagedList(int pageNumber, int pageSize, string? searchString = null)
         {
             IQueryable<Outlet> query = _context.Outlets;
             if (!string.IsNullOrEmpty(searchString))

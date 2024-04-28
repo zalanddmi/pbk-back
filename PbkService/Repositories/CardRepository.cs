@@ -18,7 +18,7 @@ namespace PbkService.Repositories
             return [.. _context.Cards];
         }
 
-        public IPagedList<Card> GetPaged(int pageNumber, int pageSize, string? searchString = null)
+        public IPagedList<Card> GetPagedList(int pageNumber, int pageSize, string? searchString = null)
         {
             IQueryable<Card> query = _context.Cards;
             if (!string.IsNullOrEmpty(searchString))

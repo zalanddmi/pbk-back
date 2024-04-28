@@ -7,12 +7,12 @@ namespace PbkService.Repositories
     {
         private readonly PbkContext _context = context;
 
-        public TypeCard? GetTypeCardById(int id)
+        public TypeCard? GetById(int id)
         {
             return _context.TypeCards.FirstOrDefault(t => t.Id == id);
         }
 
-        public IEnumerable<TypeCard?> GetTypeCards()
+        public IEnumerable<TypeCard?> Get()
         {
             return [.. _context.TypeCards];
         }

@@ -20,7 +20,7 @@ namespace PbkService.Controllers.Operator
 
         [HttpGet]
         [Authorize]
-        public IActionResult GetPaged([FromQuery] GetPagedRequest request)
+        public IActionResult GetPagedList([FromQuery] GetPagedRequest request)
         {
             try
             {

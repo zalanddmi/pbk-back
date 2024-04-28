@@ -57,7 +57,7 @@ namespace PbkService.Services
 
         public PbkPagedList<CardDTO> GetPagedList(GetPagedRequest request)
         {
-            IPagedList<Card> cards = _cardRepository.GetPaged(request.PageNumber, request.PageSize, request.SearchString);
+            IPagedList<Card> cards = _cardRepository.GetPagedList(request.PageNumber, request.PageSize, request.SearchString);
             List<CardDTO> cardsDTO = [];
             foreach (Card card in cards)
             {
@@ -100,14 +100,14 @@ namespace PbkService.Services
 
         public int Create(CardDTO cardDTO)
         {
-            Bank bank = _bankRepository.GetBankById(cardDTO.Bank.Id) ?? throw new BankNotExists($"Банк с id = {cardDTO.Bank.Id} не найден.");
-            TypeCard typeCard = _typeCardRepository.GetTypeCardById(cardDTO.TypeCard.Id) ?? throw new TypeCardNotExists($"Тип карты с id = {cardDTO.TypeCard.Id} не найден.");
+            Bank bank = _bankRepository.GetById(cardDTO.Bank.Id) ?? throw new BankNotExists($"Банк с id = {cardDTO.Bank.Id} не найден.");
+            TypeCard typeCard = _typeCardRepository.GetById(cardDTO.TypeCard.Id) ?? throw new TypeCardNotExists($"Тип карты с id = {cardDTO.TypeCard.Id} не найден.");
             List<PbkCategory> categories = [];
             if (cardDTO.Cashbacks.Count != 0)
             {
                 foreach (CardCashbackDTO cardCashbackDTO in cardDTO.Cashbacks)
                 {
-                    PbkCategory category = _categoryRepository.GetPbkCategoryById(cardCashbackDTO.Category.Id) ?? throw new PbkCategoryNotExists($"Категория с id = {cardCashbackDTO.Category.Id} не найдена.");
+                    PbkCategory category = _categoryRepository.GetById(cardCashbackDTO.Category.Id) ?? throw new PbkCategoryNotExists($"Категория с id = {cardCashbackDTO.Category.Id} не найдена.");
                     categories.Add(category);
                 }
             }
@@ -141,8 +141,8 @@ namespace PbkService.Services
         public void Update(CardDTO cardDTO)
         {
             Card? card = _cardRepository.GetById(cardDTO.Id) ?? throw new CardNotExists($"Карта с id = {cardDTO.Id} не найдена.");
-            Bank? bank = _bankRepository.GetBankById(cardDTO.Bank.Id) ?? throw new BankNotExists($"Банк с id = {cardDTO.Bank.Id} не найден.");
-            TypeCard typeCard = _typeCardRepository.GetTypeCardById(cardDTO.TypeCard.Id) ?? throw new TypeCardNotExists($"Тип карты с id = {cardDTO.TypeCard.Id} не найден.");
+            Bank? bank = _bankRepository.GetById(cardDTO.Bank.Id) ?? throw new BankNotExists($"Банк с id = {cardDTO.Bank.Id} не найден.");
+            TypeCard typeCard = _typeCardRepository.GetById(cardDTO.TypeCard.Id) ?? throw new TypeCardNotExists($"Тип карты с id = {cardDTO.TypeCard.Id} не найден.");
             List<Cashback> cashbacks = [.. card.Cashbacks];
             List<Cashback> cashbacksCreate = [];
             List<Cashback> cashbacksUpdate = [];
@@ -153,12 +153,12 @@ namespace PbkService.Services
                 {
                     if (cc.Id == 0)
                     {
-                        PbkCategory category = _categoryRepository.GetPbkCategoryById(cc.Category.Id) ?? throw new PbkCategoryNotExists($"Категория с id = {cc.Category.Id} не найдена.");
+                        PbkCategory category = _categoryRepository.GetById(cc.Category.Id) ?? throw new PbkCategoryNotExists($"Категория с id = {cc.Category.Id} не найдена.");
                         cashbacksCreate.Add(new Cashback() { CardId = cardDTO.Id, Card = card, PbkCategoryId = category.Id, PbkCategory = category, Percent = cc.Percent });
                     }
                     else if (cashbacks.Any(c => c.Id == cc.Id))
                     {
-                        PbkCategory category = _categoryRepository.GetPbkCategoryById(cc.Category.Id) ?? throw new PbkCategoryNotExists($"Категория с id = {cc.Category.Id} не найдена.");
+                        PbkCategory category = _categoryRepository.GetById(cc.Category.Id) ?? throw new PbkCategoryNotExists($"Категория с id = {cc.Category.Id} не найдена.");
                         Cashback existingCashback = cashbacks.FirstOrDefault(c => c.Id == cc.Id);
                         if (existingCashback != null)
                         {
@@ -182,7 +182,7 @@ namespace PbkService.Services
             {
                 foreach (CardCashbackDTO cc in cardDTO.Cashbacks)
                 {
-                    PbkCategory category = _categoryRepository.GetPbkCategoryById(cc.Category.Id) ?? throw new PbkCategoryNotExists($"Категория с id = {cc.Category.Id} не найдена.");
+                    PbkCategory category = _categoryRepository.GetById(cc.Category.Id) ?? throw new PbkCategoryNotExists($"Категория с id = {cc.Category.Id} не найдена.");
                     cashbacksCreate.Add(new Cashback() { CardId = cardDTO.Id, Card = card, PbkCategoryId = category.Id, PbkCategory = category, Percent = cc.Percent });
                 }
             }

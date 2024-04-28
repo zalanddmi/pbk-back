@@ -12,9 +12,9 @@ namespace PbkService.Services
     {
         private readonly ShopRepository _shopRepository = shopRepository;
 
-        public ShopDTO GetShopById(int id)
+        public ShopDTO GetById(int id)
         {
-            Shop? shop = _shopRepository.GetShopById(id) ?? throw new ShopNotExists($"Магазин с id = {id} не найден.");
+            Shop? shop = _shopRepository.GetById(id) ?? throw new ShopNotExists($"Магазин с id = {id} не найден.");
             List<DisplayModel<int>> outlets = [];
             if (shop.Outlets != null)
             {
@@ -27,33 +27,9 @@ namespace PbkService.Services
             return shopDTO;
         }
 
-        public IEnumerable<ShopDTO> GetShops()
-        {
-            IEnumerable<Shop?> shops = _shopRepository.GetShops();
-            if (shops == null)
-            {
-                return [];
-            }
-            List<ShopDTO> shopsDTO = [];
-            foreach (Shop shop in shops)
-            {
-                List<DisplayModel<int>> outlets = [];
-                if (shop.Outlets != null)
-                {
-                    foreach (Outlet outlet in shop.Outlets)
-                    {
-                        outlets.Add(new DisplayModel<int> { Id = outlet.Id, DisplayName = outlet.Name });
-                    }
-                }
-                ShopDTO shopDTO = new(shop.Name, outlets, shop.Id);
-                shopsDTO.Add(shopDTO);
-            }
-            return shopsDTO;
-        }
-
         public PbkPagedList<ShopDTO> GetPagedList(GetPagedRequest request)
         {
-            IPagedList<Shop> shops = _shopRepository.GetPagedShops(request.PageNumber, request.PageSize, request.SearchString);
+            IPagedList<Shop> shops = _shopRepository.GetPagedList(request.PageNumber, request.PageSize, request.SearchString);
             List<ShopDTO> shopsDTO = [];
             foreach (Shop shop in shops)
             {
@@ -91,14 +67,14 @@ namespace PbkService.Services
 
         public void Update(ShopDTO shopDTO)
         {
-            Shop? shop = _shopRepository.GetShopById(shopDTO.Id) ?? throw new ShopNotExists($"Магазин с id = {shopDTO.Id} не найден.");
+            Shop? shop = _shopRepository.GetById(shopDTO.Id) ?? throw new ShopNotExists($"Магазин с id = {shopDTO.Id} не найден.");
             shop.Name = shopDTO.Name;
             _shopRepository.Update(shop);
         }
 
         public void Delete(int id)
         {
-            Shop? shop = _shopRepository.GetShopById(id) ?? throw new ShopNotExists($"Магазин с id = {id} не найден.");
+            Shop? shop = _shopRepository.GetById(id) ?? throw new ShopNotExists($"Магазин с id = {id} не найден.");
             _shopRepository.Delete(shop);
         }
     }

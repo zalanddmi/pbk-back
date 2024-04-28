@@ -13,12 +13,12 @@ namespace PbkService.Repositories
             return _context.MCCs.FirstOrDefault(mcc => mcc.Code == code);
         }
 
-        public List<Mcc> GetMccs()
+        public List<Mcc> Get()
         {
             return [.. _context.MCCs];
         }
 
-        public IPagedList<Mcc> GetPagedMccs(int pageNumber, int pageSize, string? searchString = null)
+        public IPagedList<Mcc> GetPagedList(int pageNumber, int pageSize, string? searchString = null)
         {
             IQueryable<Mcc> query = _context.MCCs;
             if (!string.IsNullOrEmpty(searchString))

@@ -16,7 +16,7 @@ namespace PbkService.Controllers.Operator
 
         [HttpGet]
         [Authorize]
-        public IActionResult GetPagedBanks([FromQuery] GetPagedRequest request)
+        public IActionResult GetPagedList([FromQuery] GetPagedRequest request)
         {
             try
             {
@@ -35,11 +35,11 @@ namespace PbkService.Controllers.Operator
 
         [HttpGet("{id}")]
         [Authorize]
-        public IActionResult GetBankById(int id)
+        public IActionResult GetById(int id)
         {
             try
             {
-                BankDTO bank = _bankService.GetBankById(id);
+                BankDTO bank = _bankService.GetById(id);
                 return Ok(bank);
             }
             catch (BankNotExists ex)
