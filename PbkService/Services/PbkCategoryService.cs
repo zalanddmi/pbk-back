@@ -158,7 +158,7 @@ namespace PbkService.Services
             }
         }
 
-        public async void Delete(int id)
+        public void Delete(int id)
         {
             PbkCategory? category = _pbkCategoryRepository.GetPbkCategoryById(id) ?? throw new PbkCategoryNotExists($"Категория с id = {id} не найдена.");
             IEnumerable<MccPbkCategory?> mcs = _mccPbkCategoryRepository.GetByCategoryId(category.Id);

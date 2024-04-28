@@ -41,6 +41,9 @@ namespace PbkService
             services.AddScoped<PbkCategoryRepository>();
             services.AddScoped<PbkCategoryService>();
             services.AddScoped<MccPbkCategoryRepository>();
+            services.AddScoped<CashbackRepository>();
+            services.AddScoped<CardRepository>();
+            services.AddScoped<CardService>();
         }
 
 
