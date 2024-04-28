@@ -8,12 +8,12 @@ namespace PbkService.Controllers.Operator
 {
     [Route("api/operator/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Operator")]
     public class MccController(MccService service) : Controller
     {
         private readonly MccService _service = service;
 
         [HttpGet]
-        [Authorize]
         public IActionResult GetPagedList([FromQuery] GetPagedRequest request)
         {
             try
@@ -34,7 +34,6 @@ namespace PbkService.Controllers.Operator
         /// Временное решение для импорта серверного файла с MCC-кодами
         /// </summary>
         [HttpPost("import")]
-        [Authorize(Roles = "Admin")]
         public IActionResult Import(IFormFile formFile)
         {
             try

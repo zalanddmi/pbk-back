@@ -10,12 +10,12 @@ namespace PbkService.Controllers.Operator
 {
     [Route("api/operator/[controller]")]
     [ApiController]
+    [Authorize (Roles = "Operator")]
     public class BankController(BankService bankService) : Controller
     {
         private readonly BankService _bankService = bankService;
 
         [HttpGet]
-        [Authorize]
         public IActionResult GetPagedList([FromQuery] GetPagedRequest request)
         {
             try
@@ -34,7 +34,6 @@ namespace PbkService.Controllers.Operator
         }
 
         [HttpGet("{id}")]
-        [Authorize]
         public IActionResult GetById(int id)
         {
             try
@@ -62,7 +61,6 @@ namespace PbkService.Controllers.Operator
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult Create(BankDTO bank)
         {
             try
@@ -81,7 +79,6 @@ namespace PbkService.Controllers.Operator
         }
 
         [HttpPut]
-        [Authorize]
         public IActionResult Update(BankDTO bank) 
         {
             try
@@ -109,7 +106,6 @@ namespace PbkService.Controllers.Operator
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
         public IActionResult Delete(int id)
         {
             try

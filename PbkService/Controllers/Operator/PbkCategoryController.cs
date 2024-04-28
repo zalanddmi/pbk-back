@@ -11,12 +11,12 @@ namespace PbkService.Controllers.Operator
 {
     [Route("api/operator/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Operator")]
     public class PbkCategoryController(PbkCategoryService categoryService) : Controller
     {
         private readonly PbkCategoryService _categoryService = categoryService;
 
         [HttpGet]
-        [Authorize]
         public IActionResult GetPagedList([FromQuery] GetPagedRequest request)
         {
             try
@@ -35,7 +35,6 @@ namespace PbkService.Controllers.Operator
         }
 
         [HttpGet("{id}")]
-        [Authorize]
         public IActionResult GetById(int id)
         {
             try
@@ -63,7 +62,6 @@ namespace PbkService.Controllers.Operator
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult Create(PbkCategoryDTO category)
         {
             try
@@ -91,7 +89,6 @@ namespace PbkService.Controllers.Operator
         }
 
         [HttpPut]
-        [Authorize]
         public IActionResult Update(PbkCategoryDTO category)
         {
             try
@@ -119,7 +116,6 @@ namespace PbkService.Controllers.Operator
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
         public IActionResult Delete(int id)
         {
             try

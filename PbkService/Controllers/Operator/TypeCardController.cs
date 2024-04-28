@@ -9,12 +9,12 @@ namespace PbkService.Controllers.Operator
 {
     [Route("api/operator/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Operator")]
     public class TypeCardController(TypeCardService typeCardService) : Controller
     {
         private readonly TypeCardService _typeCardService = typeCardService;
 
         [HttpGet]
-        [Authorize]
         public IActionResult Get()
         {
             try
@@ -33,7 +33,6 @@ namespace PbkService.Controllers.Operator
         }
 
         [HttpGet("{id}")]
-        [Authorize]
         public IActionResult GetById(int id)
         {
             try
@@ -61,7 +60,6 @@ namespace PbkService.Controllers.Operator
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult Create(TypeCardDTO typeCard)
         {
             try
@@ -80,7 +78,6 @@ namespace PbkService.Controllers.Operator
         }
 
         [HttpPut]
-        [Authorize]
         public IActionResult Update(TypeCardDTO typeCard)
         {
             try
@@ -108,7 +105,6 @@ namespace PbkService.Controllers.Operator
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
         public IActionResult Delete(int id)
         {
             try

@@ -12,12 +12,12 @@ namespace PbkService.Controllers.Operator
 {
     [Route("api/operator/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Operator")]
     public class OutletController(OutletService outletService) : Controller
     {
         private readonly OutletService _outletService = outletService;
 
         [HttpGet]
-        [Authorize]
         public IActionResult GetPagedList([FromQuery] GetPagedRequest request)
         {
             try
@@ -36,7 +36,6 @@ namespace PbkService.Controllers.Operator
         }
 
         [HttpGet("{id}")]
-        [Authorize]
         public IActionResult GetById(int id)
         {
             try
@@ -64,7 +63,6 @@ namespace PbkService.Controllers.Operator
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult Create(OutletDTO outlet)
         {
             try
@@ -101,7 +99,6 @@ namespace PbkService.Controllers.Operator
         }
 
         [HttpPut]
-        [Authorize]
         public IActionResult Update(OutletDTO outlet)
         {
             try
@@ -147,7 +144,6 @@ namespace PbkService.Controllers.Operator
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
         public IActionResult Delete(int id)
         {
             try
