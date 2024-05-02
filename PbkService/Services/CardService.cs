@@ -140,8 +140,8 @@ namespace PbkService.Services
 
         public void Update(CardDTO cardDTO)
         {
-            Card? card = _cardRepository.GetById(cardDTO.Id) ?? throw new CardNotExists($"Карта с id = {cardDTO.Id} не найдена.");
-            Bank? bank = _bankRepository.GetById(cardDTO.Bank.Id) ?? throw new BankNotExists($"Банк с id = {cardDTO.Bank.Id} не найден.");
+            Card card = _cardRepository.GetById(cardDTO.Id) ?? throw new CardNotExists($"Карта с id = {cardDTO.Id} не найдена.");
+            Bank bank = _bankRepository.GetById(cardDTO.Bank.Id) ?? throw new BankNotExists($"Банк с id = {cardDTO.Bank.Id} не найден.");
             TypeCard typeCard = _typeCardRepository.GetById(cardDTO.TypeCard.Id) ?? throw new TypeCardNotExists($"Тип карты с id = {cardDTO.TypeCard.Id} не найден.");
             List<Cashback> cashbacks = [.. card.Cashbacks];
             List<Cashback> cashbacksCreate = [];

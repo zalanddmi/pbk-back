@@ -2,7 +2,7 @@
 
 namespace PbkService.ViewModels
 {
-    public record ShopDTO(string Name, List<DisplayModel<int>> Outlets, int Id = 0)
+    public record ShopDTO(string Name, List<DisplayModel<int>>? Outlets, int Id = 0)
     {
     }
 }

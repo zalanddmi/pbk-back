@@ -3,6 +3,6 @@
     public class DisplayModel<TId>
     {
         public required TId Id { get; set; }
-        public required string DisplayName { get; set; }
+        public string? DisplayName { get; set; }
     }
 }

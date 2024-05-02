@@ -94,7 +94,7 @@ namespace PbkService.Services
 
         public void Update(PbkCategoryDTO categoryDTO)
         {
-            PbkCategory? category = _pbkCategoryRepository.GetById(categoryDTO.Id) ?? throw new PbkCategoryNotExists($"Категория с id = {categoryDTO.Id} не найдена.");
+            PbkCategory category = _pbkCategoryRepository.GetById(categoryDTO.Id) ?? throw new PbkCategoryNotExists($"Категория с id = {categoryDTO.Id} не найдена.");
             category.Name = categoryDTO.Name;
             IEnumerable<MccPbkCategory?> mcs = _mccPbkCategoryRepository.GetByCategoryId(categoryDTO.Id);
             List<MccPbkCategory> mcsCreate = [];
