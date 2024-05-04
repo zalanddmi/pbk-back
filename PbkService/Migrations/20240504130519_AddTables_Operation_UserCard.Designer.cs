@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PbkService.Data;
@@ -11,9 +12,11 @@ using PbkService.Data;
 namespace PbkService.Migrations
 {
     [DbContext(typeof(PbkContext))]
-    partial class PbkContextModelSnapshot : ModelSnapshot
+    [Migration("20240504130519_AddTables_Operation_UserCard")]
+    partial class AddTables_Operation_UserCard
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -141,9 +144,7 @@ namespace PbkService.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("Date")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("current_timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("OutletId")
                         .HasColumnType("integer");
@@ -245,18 +246,6 @@ namespace PbkService.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TypeCards");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Дебетовая"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Кредитная"
-                        });
                 });
 
             modelBuilder.Entity("PbkService.Models.User", b =>
