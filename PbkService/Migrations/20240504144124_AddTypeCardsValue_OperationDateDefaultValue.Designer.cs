@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PbkService.Data;
@@ -11,9 +12,11 @@ using PbkService.Data;
 namespace PbkService.Migrations
 {
     [DbContext(typeof(PbkContext))]
-    partial class PbkContextModelSnapshot : ModelSnapshot
+    [Migration("20240504144124_AddTypeCardsValue_OperationDateDefaultValue")]
+    partial class AddTypeCardsValue_OperationDateDefaultValue
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
