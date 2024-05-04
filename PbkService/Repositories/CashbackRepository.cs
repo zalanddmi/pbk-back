@@ -23,8 +23,9 @@ namespace PbkService.Repositories
             IQueryable<Cashback> query = _context.Cashbacks;
             if (!string.IsNullOrEmpty(searchString))
             {
-                query = query.Where(cash => cash.Card.Name.Contains(searchString)
-                || cash.PbkCategory.Name.Contains(searchString));
+                searchString = searchString.ToLower();
+                query = query.Where(cash => cash.Card.Name.ToLower().Contains(searchString)
+                || cash.PbkCategory.Name.ToLower().Contains(searchString));
             }
             query = query.OrderBy(cash => cash.Id);
             return query.ToPagedList(pageNumber, pageSize);

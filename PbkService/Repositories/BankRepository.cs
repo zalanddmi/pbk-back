@@ -23,7 +23,8 @@ namespace PbkService.Repositories
             IQueryable<Bank> query = _context.Banks;
             if (!string.IsNullOrEmpty(searchString))
             {
-                query = query.Where(bank => bank.Name.Contains(searchString));
+                searchString = searchString.ToLower();
+                query = query.Where(bank => bank.Name.ToLower().Contains(searchString));
             }
             query = query.OrderBy(bank => bank.Id);
             return query.ToPagedList(pageNumber, pageSize);

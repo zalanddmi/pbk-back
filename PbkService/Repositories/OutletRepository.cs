@@ -23,9 +23,10 @@ namespace PbkService.Repositories
             IQueryable<Outlet> query = _context.Outlets;
             if (!string.IsNullOrEmpty(searchString))
             {
-                query = query.Where(outlet => outlet.Name.Contains(searchString)
-                || outlet.Shop.Name.Contains(searchString)
-                || outlet.MccCode.Contains(searchString));
+                searchString = searchString.ToLower();
+                query = query.Where(outlet => outlet.Name.ToLower().Contains(searchString)
+                || outlet.Shop.Name.ToLower().Contains(searchString)
+                || outlet.MccCode.ToLower().Contains(searchString));
             }
             query = query.OrderBy(outlet => outlet.Id);
             return query.ToPagedList(pageNumber, pageSize);

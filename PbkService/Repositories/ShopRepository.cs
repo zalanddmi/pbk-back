@@ -23,7 +23,8 @@ namespace PbkService.Repositories
             IQueryable<Shop> query = _context.Shops;
             if (!string.IsNullOrEmpty(searchString))
             {
-                query = query.Where(shop => shop.Name.Contains(searchString));
+                searchString = searchString.ToLower();
+                query = query.Where(shop => shop.Name.ToLower().Contains(searchString));
             }
             query = query.OrderBy(shop => shop.Id);
             return query.ToPagedList(pageNumber, pageSize);

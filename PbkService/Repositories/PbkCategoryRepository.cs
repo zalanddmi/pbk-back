@@ -23,7 +23,8 @@ namespace PbkService.Repositories
             IQueryable<PbkCategory> query = _context.PbkCategories;
             if (!string.IsNullOrEmpty(searchString))
             {
-                query = query.Where(category => category.Name.Contains(searchString));
+                searchString = searchString.ToLower();
+                query = query.Where(category => category.Name.ToLower().Contains(searchString));
             }
             query = query.OrderBy(category => category.Id);
             return query.ToPagedList(pageNumber, pageSize);

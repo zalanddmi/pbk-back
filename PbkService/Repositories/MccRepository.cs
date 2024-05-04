@@ -23,7 +23,8 @@ namespace PbkService.Repositories
             IQueryable<Mcc> query = _context.MCCs;
             if (!string.IsNullOrEmpty(searchString))
             {
-                query = query.Where(mcc => mcc.Name.Contains(searchString) || mcc.Code.Contains(searchString));
+                searchString = searchString.ToLower();
+                query = query.Where(mcc => mcc.Name.ToLower().Contains(searchString) || mcc.Code.ToLower().Contains(searchString));
             }
             query = query.OrderBy(mcc => mcc.Code);
             return query.ToPagedList(pageNumber, pageSize);
