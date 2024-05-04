@@ -22,5 +22,8 @@ namespace PbkService.Models
         public string? Email { get; set; }
         [MaxLength(100)]
         public required string Role { get; set; }
+
+        public virtual ICollection<Operation> Operations { get; set; }
+        public virtual ICollection<UserCard> UserCards { get; set; }
     }
 }

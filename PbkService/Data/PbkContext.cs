@@ -20,5 +20,7 @@ namespace PbkService.Data
         public DbSet<PbkCategory> PbkCategories { get; set; }
         public DbSet<Shop> Shops { get; set; }
         public DbSet<TypeCard> TypeCards { get; set; }
+        public DbSet<Operation> Operations { get; set; }
+        public DbSet<UserCard> UserCards { get; set; }
     }
 }
