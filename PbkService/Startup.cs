@@ -46,6 +46,9 @@ namespace PbkService
             services.AddScoped<CardService>();
             services.AddScoped<OperationService>();
             services.AddScoped<OperationRepository>();
+            services.AddScoped<AlgorithmService>();
+            services.AddScoped<UserCardService>();
+            services.AddScoped<UserCardRepository>();
         }
 
 

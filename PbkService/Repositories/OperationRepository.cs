@@ -1,6 +1,5 @@
 ﻿using PbkService.Data;
 using PbkService.Models;
-using X.PagedList;
 
 namespace PbkService.Repositories
 {
@@ -11,22 +10,6 @@ namespace PbkService.Repositories
         public Operation? GetById(int id)
         {
             return _context.Operations.FirstOrDefault(operation => operation.Id == id);
-        }
-
-        public IEnumerable<Operation?> Get()
-        {
-            return [.. _context.Operations];
-        }
-
-        public IPagedList<Operation> GetPagedList(int pageNumber, int pageSize, string? searchString = null)
-        {
-            IQueryable<Operation> query = _context.Operations;
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                query = query.Where(operation => operation.Outlet.Name.Contains(searchString));
-            }
-            query = query.OrderBy(operation => operation.Id);
-            return query.ToPagedList(pageNumber, pageSize);
         }
 
         public void Create(Operation operation)
