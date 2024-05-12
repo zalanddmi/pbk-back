@@ -44,6 +44,8 @@ namespace PbkService
             services.AddScoped<CashbackRepository>();
             services.AddScoped<CardRepository>();
             services.AddScoped<CardService>();
+            services.AddScoped<OperationService>();
+            services.AddScoped<OperationRepository>();
         }
 
 
