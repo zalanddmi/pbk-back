@@ -21,7 +21,7 @@ namespace PbkService.Services
 
         public async Task<UserDTO> Register(RegisterRequest request)
         {
-            User? userByUsername = await _userRepository.GetByUsername(request.Username);
+            User? userByUsername = _userRepository.GetByUsername(request.Username);
             if (userByUsername != null)
             {
                 throw new UserUsernameExists($"Пользователь с ником {request.Username} существует.");
@@ -91,7 +91,7 @@ namespace PbkService.Services
             }
             else
             {
-                user = await _userRepository.GetByUsername(request.Login);
+                user = _userRepository.GetByUsername(request.Login);
                 if (user == null)
                 {
                     throw new UserUsernameNotExists($"Пользователя с ником {request.Login} не существует.");

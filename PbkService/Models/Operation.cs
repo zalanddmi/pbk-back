@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -17,6 +16,7 @@ namespace PbkService.Models
         public virtual required Outlet Outlet { get; set; }
         [Precision(10, 2)]
         public required decimal Sum { get; set; }
-        public required DateTime Date { get; set; }
+        [Required]
+        public DateTime Date { get; set; }
     }
 }
