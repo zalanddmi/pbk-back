@@ -8,9 +8,9 @@ namespace PbkService.Repositories
     {
         private readonly PbkContext _context = context;
 
-        public async Task<User?> GetByUsername(string username)
+        public User? GetByUsername(string username)
         {
-           return await _context.Users.FirstOrDefaultAsync(x => x.Username == username);
+           return _context.Users.FirstOrDefault(x => x.Username == username);
         }
 
         public async Task<User?> GetByEmail(string email)
