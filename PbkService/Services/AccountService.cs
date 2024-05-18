@@ -65,7 +65,8 @@ namespace PbkService.Services
             UserDTO userDTO = new()
             {
                 Username = user.Username,
-                Token = token
+                Token = token,
+                Role = user.Role
             };
             return userDTO;
         }
@@ -106,7 +107,8 @@ namespace PbkService.Services
             UserDTO userDTO = new()
             {
                 Username = user.Username,
-                Token = token
+                Token = token,
+                Role = user.Role
             };
             return userDTO;
         }
