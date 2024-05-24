@@ -8,11 +8,11 @@ using PbkService.ViewModels;
 using PbkService.Auxiliaries.Exceptions.Outlet;
 using PbkService.Auxiliaries.Exceptions.Mcc;
 
-namespace PbkService.Controllers.Operator
+namespace PbkService.Controllers
 {
     [Route("api/operator/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Operator")]
+    [Authorize]
     public class OutletController(OutletService outletService) : Controller
     {
         private readonly OutletService _outletService = outletService;
@@ -63,6 +63,7 @@ namespace PbkService.Controllers.Operator
         }
 
         [HttpPost]
+        [Authorize(Roles = "Operator")]
         public IActionResult Create(OutletDTO outlet)
         {
             try
@@ -99,6 +100,7 @@ namespace PbkService.Controllers.Operator
         }
 
         [HttpPut]
+        [Authorize(Roles = "Operator")]
         public IActionResult Update(OutletDTO outlet)
         {
             try
@@ -144,6 +146,7 @@ namespace PbkService.Controllers.Operator
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Operator")]
         public IActionResult Delete(int id)
         {
             try
