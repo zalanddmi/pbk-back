@@ -49,7 +49,6 @@ namespace PbkService
             builder.Services.AddScoped<UserCardRepository>();
 
             var app = builder.Build();
-            app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseCors("Development");
             app.MapControllers();
@@ -57,6 +56,7 @@ namespace PbkService
             app.UseAuthorization();
             app.UseSwagger();
             app.UseSwaggerUI();
+            app.MapFallbackToFile("index.html");
             app.Run();
         }
     }
