@@ -8,7 +8,7 @@ namespace PbkService.Controllers
 {
     [ApiController]
     [Authorize]
-    [Route("bank-statement")]
+    [Route("api/bank-statement")]
     public class BankStatementController(BankStatementParserService service) : Controller
     {
         [HttpPost("parse")]
