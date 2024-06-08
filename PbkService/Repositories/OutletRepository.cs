@@ -13,6 +13,11 @@ namespace PbkService.Repositories
             return _context.Outlets.FirstOrDefault(outlet => outlet.Id == id);
         }
 
+        public Outlet? GetByName(string name)
+        {
+            return _context.Outlets.FirstOrDefault(outlet => outlet.Name.ToLower().Contains(name.ToLower()));
+        }
+
         public IEnumerable<Outlet?> GetOutlets()
         {
             return [.. _context.Outlets];
