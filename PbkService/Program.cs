@@ -47,6 +47,7 @@ namespace PbkService
             builder.Services.AddScoped<AlgorithmService>();
             builder.Services.AddScoped<UserCardService>();
             builder.Services.AddScoped<UserCardRepository>();
+            builder.Services.AddScoped<BankStatementParserService>();
 
             var app = builder.Build();
             app.UseStaticFiles();

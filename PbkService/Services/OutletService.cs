@@ -24,6 +24,12 @@ namespace PbkService.Services
             OutletDTO outletDTO = new(outlet.Name, shop, mcc, outlet.Id);
             return outletDTO;
         }
+        
+        public Outlet? GetByName(string name)
+        {
+            Outlet? outlet = _outletRepository.GetByName(name);
+            return outlet;
+        }
 
         public PbkPagedList<OutletDTO> GetPagedList(GetPagedRequest request)
         {
